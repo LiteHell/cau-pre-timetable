@@ -34,17 +34,22 @@ function spawnCommand(command, argvs) {
 
     console.log('Copying files')
     for (const ext of ['csv', 'json']) {
-        const targetName = path.join(__dirname, 'public/courses/courses.' + ext);
-        if (existsSync(targetName))
-            await fs.rm(targetName);
-        await fs.copyFile('courses.tmp.' + ext, targetName)
-        await fs.rm('courses.tmp.' + ext);
+        const source = 'courses.tmp.' + ext
+        const debugTargetName = path.join(__dirname, 'public/courses/courses.' + ext);
+        const prodTargetName = path.join(__dirname, 'build/courses/courses.' + ext);
+        if (existsSync(debugTargetName))
+            await fs.rm(debugTargetName);
+        await fs.copyFile(source, debugTargetName)
+        await fs.copyFile(source, prodTargetName)
+        await fs.rm(source);
     }
     console.log('Writing timestamp');
-    await fs.writeFile(path.join(__dirname, 'public/courses/crawlInfo.json'), JSON.stringify({
+    const crawlInfo = JSON.stringify({
         crawlledAt: Date.now(),
         year,
         semester
-    }), { encoding: 'utf8' });
+    });
+    await fs.writeFile(path.join(__dirname, 'public/courses/crawlInfo.json'), crawlInfo, { encoding: 'utf8' });
+    await fs.writeFile(path.join(__dirname, 'build/courses/crawlInfo.json'), crawlInfo, { encoding: 'utf8' });
     console.log('Done');
 })();
