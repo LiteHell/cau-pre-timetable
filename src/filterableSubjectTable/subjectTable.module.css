@@ -5,10 +5,6 @@ table.subjects {
     font-size: 12px;
     min-width: 80vw;
 }
-.subjects-table-container {
-    max-width: 80vw;
-    overflow-x: scroll;
-}
 table.subjects td, table.subjects th {
     padding: 10px;
     border: 1px solid black;

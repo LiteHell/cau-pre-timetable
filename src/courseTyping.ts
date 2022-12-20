@@ -4,7 +4,13 @@ type courseJsonCollege = {
     campus: number
 }
 
-export type courseJsonItem = {
+export type CrawlInfo = {
+    crawlledAt: number,
+    year: string,
+    semester: string;
+};
+
+export type CourseJsonDataItem = {
     campus: '서울' | '안성',
     subject: {
         collegeName: string | null,

@@ -1,0 +1,21 @@
+.subjectTableContainer {
+    overflow-x: scroll;
+}
+
+.filterOptions {
+    display: table;
+    background: whitesmoke;
+    padding: 10px;
+    margin-bottom: 20px;
+    overflow-y: scroll;
+}
+.filterRow {
+    display: table-row;
+}
+.filterType, .filterItems {
+    display: table-cell;
+    padding: 5px 8px;
+}
+.filterItems.withBubbles > * + * {
+    margin-left: 7px;
+}

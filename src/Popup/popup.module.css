@@ -1,0 +1,37 @@
+.popup {
+    display: none;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    max-height: 60%;
+    width: 100%;
+    max-width: 100%;
+    background: whitesmoke;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+.popup.isActive {
+    display: block;
+}
+.popup .header {
+    padding: 20px 20px 10px 20px;
+    position: sticky;
+    top: 0px;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+}
+.popup .header .title {
+    font-size: 20px;
+    flex: 1;
+}
+.popup .header .close {
+    float: right;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+}
+.popup .content {
+    padding: 10px 20px 20px 20px;
+}

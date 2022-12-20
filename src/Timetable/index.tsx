@@ -56,7 +56,7 @@ function getMatchedCol(classes: Class[], day: number, classPeriod: number) {
                     border: '1px solid ' + backColors[i],
                     color: blackForeColors[i] ? 'black': ' white'
                 }}
-                        >{firstPart && <div>{cls.name}<div className="smaller">{cls.professor}<br></br>{schedule.location}</div></div>}</div>
+                        >{firstPart && <div className="class-description">{cls.name}<div className="smaller">{cls.professor}<br></br>{schedule.location}</div></div>}</div>
                     } 
                     {afterEnd > 0 && <div className="placeholder" style={{height: (colHeight * (afterEnd / 60)) + 'em'}}></div>} 
                 </div>

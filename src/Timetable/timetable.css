@@ -29,8 +29,13 @@
 
 .timeslot-row-description {
     border: 1px solid black;
+    text-overflow: ellipsis;
+}
+
+.class-description {
+    font-size: 0.9em;
 }
 
 .smaller {
-    font-size: 0.8em;
+    font-size: 0.75em;
 }

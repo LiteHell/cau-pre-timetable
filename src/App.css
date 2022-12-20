@@ -2,7 +2,7 @@ body {
     background: rgb(52, 52, 52);
     padding: 30px;
 }
-.App {
+.app {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,23 +10,45 @@ body {
 article {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
-header {
+header, .qnaContainer {
     color: white;
 }
-
-.timetable-preview {
+.actionButtons {
+    margin: 15px 0px;
+    text-align: center;
+}
+.actionButtons button {
+    font-size: 1.2em;
+    margin: 0px 0.3em;
+}
+.timetablePreview {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-
-.timetable-preview table.classesAdded {
+h1 {
+    text-align: center;
+}
+.timetablePreview table.classesAdded {
     background: whitesmoke;
     border-collapse: collapse;
 }
-.timetable-preview table.classesAdded td,
-.timetable-preview table.classesAdded th {
+.timetablePreview table.classesAdded td,
+.timetablePreview table.classesAdded th {
     border: 1px solid black;
     padding: 10px;
+}
+
+footer {
+    padding: 2em;
+    color: white;
+    text-align: center;
+}
+a {
+    color: rgb(47, 173, 131);
+}
+a:hover {
+    color: rgb(36, 129, 98);
 }

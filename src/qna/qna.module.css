@@ -1,0 +1,19 @@
+.qnaItem {
+    margin-bottom: 1em;
+}
+.qnaItem .question::before {
+    content: 'Q. '
+}
+.qnaItem .answer::Before {
+    content: 'A. '
+}
+.qnaItem .answer {
+    text-indent: -1.2em;
+    padding-left: 1.2em;
+}
+.remarks {
+    list-style-type: '※ ';
+    list-style-position: inside;
+    padding-left: 0px;
+    margin-left: 0px;
+}

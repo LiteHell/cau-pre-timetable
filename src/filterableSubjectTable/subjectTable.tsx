@@ -1,15 +1,15 @@
 import React from 'react';
-import './subjectTable.css';
+import styles from './subjectTable.module.css';
 import { PaginatedList } from 'react-paginated-list'
-import { courseJsonItem } from './courseTyping';
+import { CourseJsonDataItem } from '../courseTyping';
 
-function SubjectTable(opts: { courses: courseJsonItem[], onAddButtonClick: (course: courseJsonItem) => void, courseCodesToHideAddBtn: number[] }) {
+function SubjectTable(opts: { courses: CourseJsonDataItem[], onAddButtonClick: (course: CourseJsonDataItem) => void, courseCodesToHideAddBtn: number[] }) {
     return (
         <PaginatedList
             list={opts.courses}
             itemsPerPage={20}
-            renderList={(list) => (<div className="subjects-table-container">
-                <table className="subjects">
+            renderList={(list) => (
+                <table className={styles.subjects}>
                     <thead>
                         <th>추가</th>
                         <th>캠퍼스</th>
@@ -51,7 +51,6 @@ function SubjectTable(opts: { courses: courseJsonItem[], onAddButtonClick: (cour
                         </tr>)
                         }</tbody>
                 </table>
-            </div>
             )}
         ></PaginatedList>
     );
