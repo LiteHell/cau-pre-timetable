@@ -29,5 +29,8 @@ COPY crawl.js /app
 # Expose port
 EXPOSE 3000
 
+# Mark entrypoint file executable
+RUN ["chmod", "+x", "/app/start.sh"]
+
 # Set entrypoint
 ENTRYPOINT [ "/app/start.sh" ]
