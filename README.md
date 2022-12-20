@@ -14,6 +14,7 @@ This app uses docker, and crawls lectures automatically every 6 hours if you use
 1. Done! Visit `http://127.0.0.1:3000`
 
 ## Without docker
+1. Install node v16 and [yarn](https://yarnpkg.com).
 1. run `yarn`
 1. run `yarn build`
 1. run `node ./crawl`
