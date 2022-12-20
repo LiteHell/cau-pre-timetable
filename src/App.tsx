@@ -53,9 +53,9 @@ function App() {
 
   setTimeout(async () => {
     if (crawlInfo === null) {
-      const coursesJson = await fetch('/courses.json');
+      const coursesJson = await fetch('/courses/courses.json');
       setCourses(await coursesJson.json());
-      const crawlInfo = await fetch('/crawlInfo.json');
+      const crawlInfo = await fetch('/courses/crawlInfo.json');
       setCrawlInfo(await crawlInfo.json());
     }
   }, 0);
@@ -74,7 +74,7 @@ function App() {
           Q. 정확합니까?<br></br>
           A. 정식 공개일 전에 크롤링한 거니 어느정도 부정확합니다.<br></br><br></br>
           Q. 파일로 다운로드받고 싶어요.<br></br>
-          A. <a href="/courses.json">JSON 파일 링크</a>, <a href="/courses.csv">CSV 파일 링크</a><br></br>
+          A. <a href="/courses/courses.json">JSON 파일 링크</a>, <a href="/courses/courses.csv">CSV 파일 링크</a><br></br>
           &nbsp;&nbsp;&nbsp;CSV 파일 다운받아서 엑셀로 여시면 편리합니다. <a href="https://blog.naver.com/excelmc/220843369039">추가적으로, 엑셀 자동필터 기능 쓰시면 더 편리합니다.</a><br></br><br></br>
           Q. 홈페이지 UI가 성의없습니다.<br></br>
           A. 대충 만들어서 그렇습니다. 그냥 쓰세요.<br></br><br></br>
