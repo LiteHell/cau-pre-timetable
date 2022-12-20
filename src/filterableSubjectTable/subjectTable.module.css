@@ -13,3 +13,6 @@ table.subjects td, table.subjects th {
     word-break: keep-all;
     white-space: nowrap;
 }
+.deleteButton {
+    color: red;
+}

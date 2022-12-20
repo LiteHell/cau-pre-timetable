@@ -31,7 +31,14 @@ type FilterState = {
     }
 }
 
-function FilterableSubjectTable(opts: { courses: CourseJsonDataItem[], onAddButtonClick: (course: CourseJsonDataItem) => void, courseCodesToHideAddBtn: number[] }) {
+type FilterableSubjectTableOptions = {
+    courses: CourseJsonDataItem[];
+    onAddButtonClick: (course: CourseJsonDataItem) => void;
+    onDeleteButtonClick: (course: CourseJsonDataItem) => void;
+    courseCodesToHideAddBtn: number[]
+};
+
+function FilterableSubjectTable(opts: FilterableSubjectTableOptions) {
     const [filters, setFilters] = useState<FilterState>({
         campus: {
             seoul: true,
@@ -151,7 +158,7 @@ function FilterableSubjectTable(opts: { courses: CourseJsonDataItem[], onAddButt
                         <InputBubble acceptsNumberOnly={true} name='과목번호' value={filters.query.code} onChange={setQueryValue('code')}></InputBubble>
                         <InputBubble name='과목명' value={filters.query.name} onChange={setQueryValue('name')}></InputBubble>
                         <InputBubble name='교수' value={filters.query.professor} onChange={setQueryValue('professor')}></InputBubble>
-                        <InputBubble acceptsNumberOnly={true} name='학점' value={filters.query.points } onChange={setQueryValue('points')}></InputBubble>
+                        <InputBubble acceptsNumberOnly={true} name='학점' value={filters.query.points} onChange={setQueryValue('points')}></InputBubble>
                     </div></div><div className={styles.filterRow}>
                     <div className={styles.filterType}>
                         학년</div><div className={styles.filterItems}>
@@ -165,7 +172,7 @@ function FilterableSubjectTable(opts: { courses: CourseJsonDataItem[], onAddButt
 
             </div>
             <div className={styles.subjectTableContainer}>
-                <SubjectTable courses={opts.courses.filter(courseFilterFunc)} onAddButtonClick={opts.onAddButtonClick} courseCodesToHideAddBtn={opts.courseCodesToHideAddBtn}></SubjectTable>
+                <SubjectTable courses={opts.courses.filter(courseFilterFunc)} onDeleteButtonClick={opts.onDeleteButtonClick} onAddButtonClick={opts.onAddButtonClick} courseCodesToShowDeleteBtn={opts.courseCodesToHideAddBtn}></SubjectTable>
             </div>
         </div>
     );

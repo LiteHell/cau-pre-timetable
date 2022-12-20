@@ -3,7 +3,14 @@ import styles from './subjectTable.module.css';
 import { PaginatedList } from 'react-paginated-list'
 import { CourseJsonDataItem } from '../courseTyping';
 
-function SubjectTable(opts: { courses: CourseJsonDataItem[], onAddButtonClick: (course: CourseJsonDataItem) => void, courseCodesToHideAddBtn: number[] }) {
+type SubjectTableOptions = {
+    courses: CourseJsonDataItem[];
+    onAddButtonClick: (course: CourseJsonDataItem) => void;
+    onDeleteButtonClick: (course: CourseJsonDataItem) => void;
+    courseCodesToShowDeleteBtn: number[];
+};
+
+function SubjectTable(opts: SubjectTableOptions) {
     return (
         <PaginatedList
             list={opts.courses}
@@ -31,7 +38,10 @@ function SubjectTable(opts: { courses: CourseJsonDataItem[], onAddButtonClick: (
                     </thead>
                     <tbody>
                         {list.map(i => <tr>
-                            <td><button type="button" onClick={() => opts.onAddButtonClick(i)} disabled={opts.courseCodesToHideAddBtn.includes(i.subject.code)}>추가</button></td>
+                            <td>{
+                                opts.courseCodesToShowDeleteBtn.includes(i.subject.code)
+                                ? <button type="button" className={styles.deleteButton} onClick={() => opts.onDeleteButtonClick(i)}>삭제</button>
+                                : <button type="button" onClick={() => opts.onAddButtonClick(i)}>추가</button>}</td>
                             <td>{i.campus}</td>
                             <td>{i.college.name}</td>
                             <td>{i.department.name}</td>

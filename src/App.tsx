@@ -60,7 +60,10 @@ function App() {
   }, 0);
 
   const deleteSchedule = (cls: timetableCourse) => {
-    setAddedClasses(addedClasses.filter(i => i.code !== cls.code || i.class !== cls.class));
+     deleteScheduleByCodeAndClass( cls.code , cls.class);
+  }
+  const deleteScheduleByCodeAndClass = (code: number, classNo: number) => {
+    setAddedClasses(addedClasses.filter(i => i.code !== code || i.class !== classNo));
   }
 
   return (
@@ -95,6 +98,7 @@ function App() {
             <FilterableSubjectTable
               courses={(courses as any[]).filter(i => i.subject.courseName === '학사')}
               onAddButtonClick={(i) => { addSchedule(i); }}
+              onDeleteButtonClick={(i) => {deleteScheduleByCodeAndClass(i.subject.code, i.subject.class);}}
               courseCodesToHideAddBtn={addedClasses.map(i => i.code)}
             ></FilterableSubjectTable>
           </div>
