@@ -8,7 +8,7 @@ const year = process.env.CAU_YEAR;
 
 function spawnCommand(command, argvs) {
     return new Promise((resolve, reject) => {
-        const childProcess = spawn(command, argvs, { shell: true });
+        const childProcess = spawn(command, argvs);
         childProcess.stdout.pipe(process.stdout);
         childProcess.stderr.pipe(process.stderr);
         childProcess.on('close', code => {
@@ -24,7 +24,7 @@ function spawnCommand(command, argvs) {
     console.log(`Year-Semester: ${year}-${semester}`);
     for (const ext of ['json', 'csv']) {
         console.log(`Crawlling in ${ext} format`)
-        await spawnCommand('npx', ['caucrawl',
+        await spawnCommand('node', ['/app/node_modules/cau.ac.kr/dist/crawller',
             '--outFile', 'courses.tmp.' + ext,
             '--type', ext,
             '--semester', semester,
@@ -37,7 +37,8 @@ function spawnCommand(command, argvs) {
         const targetName = path.join(__dirname, 'public/courses/courses.' + ext);
         if (existsSync(targetName))
             await fs.rm(targetName);
-        await fs.rename('courses.tmp.' + ext, targetName)
+        await fs.copyFile('courses.tmp.' + ext, targetName)
+        await fs.rm('courses.tmp.' + ext);
     }
     console.log('Writing timestamp');
     await fs.writeFile(path.join(__dirname, 'public/courses/crawlInfo.json'), JSON.stringify({
