@@ -1,5 +1,6 @@
+import classnames from 'classnames';
 import React from 'react';
-import './timetable.css';
+import styles from './timetable.module.css';
 
 const backColors = ['#a0522d', '#006400', '#708090', '#000080', '#ff0000', '#ffa500', '#ffff00', '#c71585', '#00ff00', '#00ffff',
 '#0000ff', '#ff00ff', '#1e90ff', '#98fb98', '#ffdead'];
@@ -47,36 +48,40 @@ function getMatchedCol(classes: Class[], day: number, classPeriod: number) {
                 if (classLen === 0)
                     continue;
 
-                return <div className="timeslot">
-                    {beforeStart > 0 && <div className="placeholder" style={{height: (colHeight * (beforeStart / 60)) + 'em'}}></div>}
+                return <div className={styles.timeslot}>
+                    {beforeStart > 0 && <div className={styles.placeholder} style={{height: (colHeight * (beforeStart / 60)) + 'em'}}></div>}
                     {
-                    <div className="timeslot-item" style={{height: 
+                    <div className={styles.timeslotItem} style={{height: 
                         (beforeStart === 0 && afterEnd === 0 ? colHeight : colHeight * (classLen / 60)) + 'em',
                     background: backColors[i],
                     border: '1px solid ' + backColors[i],
                     color: blackForeColors[i] ? 'black': ' white'
                 }}
-                        >{firstPart && <div className="class-description">{cls.name}<div className="smaller">{cls.professor}<br></br>{schedule.location}</div></div>}</div>
+                        >{firstPart && <div className={styles.classDescription}>
+                            {cls.name}
+                            <div className={styles.smaller}>{cls.professor}
+                            <br></br>
+                            {schedule.location}</div></div>}</div>
                     } 
-                    {afterEnd > 0 && <div className="placeholder" style={{height: (colHeight * (afterEnd / 60)) + 'em'}}></div>} 
+                    {afterEnd > 0 && <div className={styles.placeholder} style={{height: (colHeight * (afterEnd / 60)) + 'em'}}></div>} 
                 </div>
             }
         }
     }
 
-    return <div className="timeslot empty"></div>
+    return <div className={classnames(styles.timeslot, styles.empty)}></div>
 }
 
 function timetable(opts: {classes: Class[]}) {
     const days = ['월','화','수','목','금','토','일'];
-    return <div className="timetable">
-        <div className="days">
-            <div className="placeholder"></div>
-            {days.map(i => <div className="day">{i}</div>)}
+    return <div className={styles.timetable}>
+        <div className={styles.days}>
+            <div className={styles.placeholder}></div>
+            {days.map(i => <div className={styles.day}>{i}</div>)}
         </div>
         {range(0, 12).map(time => 
-            <div className="timeslot-row">
-                <div className="timeslot-row-description">{time + 8}:00<br></br>({time}교시)</div>
+            <div className={styles.timeslotRow}>
+                <div className={styles.timeslotRowDescription}>{time + 8}:00<br></br>({time}교시)</div>
                 {range(0, 6).map(day => getMatchedCol(opts.classes, day, time))}
             </div>
         )}

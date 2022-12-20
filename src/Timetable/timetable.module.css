@@ -6,7 +6,7 @@
     border: 1px solid black;
     border-collapse: collapse;
 }
-.days, .timeslot-row {
+.days, .timeslotRow {
     display: table-row;
 }
 .day {
@@ -15,7 +15,7 @@
     border: 1px solid black;
 }
 
-.timeslot-row-description, .timeslot {
+.timeslotRowDescription, .timeslot {
     display: table-cell;
     vertical-align: top;
     text-align: right;
@@ -27,12 +27,12 @@
     background: #e4e4e4;
 }
 
-.timeslot-row-description {
+.timeslotRowDescription {
     border: 1px solid black;
     text-overflow: ellipsis;
 }
 
-.class-description {
+.classDescription {
     font-size: 0.9em;
 }
 
