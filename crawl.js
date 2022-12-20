@@ -34,13 +34,13 @@ function spawnCommand(command, argvs) {
 
     console.log('Copying files')
     for (const ext of ['csv', 'json']) {
-        const targetName = path.join(__dirname, 'public/courses.' + ext);
+        const targetName = path.join(__dirname, 'public/courses/courses.' + ext);
         if (existsSync(targetName))
             await fs.rm(targetName);
         await fs.rename('courses.tmp.' + ext, targetName)
     }
     console.log('Writing timestamp');
-    await fs.writeFile(path.join(__dirname, 'public/crawlInfo.json'), JSON.stringify({
+    await fs.writeFile(path.join(__dirname, 'public/courses/crawlInfo.json'), JSON.stringify({
         crawlledAt: Date.now(),
         year,
         semester
