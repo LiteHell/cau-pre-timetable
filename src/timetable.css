@@ -1,0 +1,36 @@
+.timetable {
+    font-size: 14px;
+    display: table;
+    background: whitesmoke;
+    color: black;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.days, .timeslot-row {
+    display: table-row;
+}
+.day {
+    padding: 0.5em 2em;
+    display: table-cell;
+    border: 1px solid black;
+}
+
+.timeslot-row-description, .timeslot {
+    display: table-cell;
+    vertical-align: top;
+    text-align: right;
+    height: 5em;
+    width: 5em;
+}
+
+.timeslot {
+    background: #e4e4e4;
+}
+
+.timeslot-row-description {
+    border: 1px solid black;
+}
+
+.smaller {
+    font-size: 0.8em;
+}
