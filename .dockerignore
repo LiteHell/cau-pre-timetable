@@ -1,3 +1,4 @@
 node_modules
+dist
 public/courses/*.csv
 public/courses/*.json
