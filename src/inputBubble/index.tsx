@@ -27,7 +27,7 @@ export default function inputButton({ name, promptMessage, onChange, value, ...o
         while (true) {
             const newValue = prompt(promptMessage ?? `새 ${name} 검색어을 입력하세요.\n검색어를 비우리는 경우 빈 칸으로 입력하세요.`);
             if (newValue === '' || newValue === null) {
-                return onChange(null);
+                return onChange(acceptsNumberOnly ? null : '');
             }
             if (acceptsNumberOnly) {
                 const parsed = parseInt(newValue);
