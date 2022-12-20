@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "중앙대 강의시간표 미리보기",
+  "name": "중앙대 강의시간표 미리보기",
   "icons": [
     {
       "src": "favicon.ico",
