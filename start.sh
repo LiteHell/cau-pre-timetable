@@ -5,7 +5,7 @@ cd /app
 echo "0 0 0/6 * * node /app/crawl > /app/crontab.log" > /etc/crontabs/root
 
 # Crawl before app start
-if [ ! -f /app/public/courses/crawlInfo.json ]
+if [ ! -f /app/build/courses/crawlInfo.json ]
 then
     echo "First crawl"
     node ./crawl
