@@ -1,0 +1,3 @@
+node_modules
+public/courses/*.csv
+public/courses/*.json
