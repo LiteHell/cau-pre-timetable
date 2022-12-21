@@ -2,7 +2,7 @@
 cd /app
 
 # Configure cron
-echo "0 0 0/6 * * node /app/crawl > /app/crontab.log" > /etc/crontabs/root
+echo "0 0/6 * * * node /app/crawl > /app/crontab.log" > /etc/crontabs/root
 
 # Crawl before app start
 if [ ! -f /app/build/courses/crawlInfo.json ]
