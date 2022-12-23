@@ -21,6 +21,7 @@
     text-align: right;
     height: 5em;
     width: 5em;
+    max-width: 5em;
 }
 
 .timeslot {
@@ -34,6 +35,8 @@
 
 .classDescription {
     font-size: 0.9em;
+    word-break: break-all;
+    text-overflow: ellipsis;
 }
 
 .smaller {
