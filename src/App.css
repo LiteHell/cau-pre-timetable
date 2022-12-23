@@ -8,24 +8,15 @@ body {
     align-items: center;
 }
 article {
-    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-article > * {
-    max-width: 100vw;
-}
 header, .qnaContainer {
     color: white;
 }
-section.has-timetable {
-    text-align: center;
-}
-section.has-timetable > img.timetable {
-    max-width: 90vw;
-}
 .actionButtons, .qnaContainer {
+    max-width: 100vw;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -65,4 +56,19 @@ a {
 }
 a:hover {
     color: rgb(36, 129, 98);
+}
+@media (max-width: 640px) {
+    .timetable {
+        transform: scale(0.8);
+    }
+}
+@media (max-width: 480px) {
+    .timetable {
+        transform: scale(0.7);
+    }
+}
+@media (max-width: 360px) {
+    .timetable {
+        transform: scale(0.58);
+    }
 }

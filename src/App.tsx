@@ -7,7 +7,6 @@ import { CourseJsonDataItem, CrawlInfo } from './courseTyping';
 import Qna from './qna';
 import Popup from './Popup';
 import WarningSection from './warningSection';
-import timetableToImage from './Timetable/image';
 
 type timetableCourse = { course: CourseJsonDataItem, code: number, class: number, schedules: CauSubjectSchedule[] };
 
@@ -17,7 +16,6 @@ function App() {
   const [courses, setCourses] = useState<(CourseJsonDataItem[])>([]);
   const [crawlInfo, setCrawlInfo] = useState<CrawlInfo | null>(null);
   const [addedClasses, setAddedClasses] = useState<(timetableCourse)[]>([]);
-  const [timetableImage, setTimetableImage] = useState<string>('');
 
   const addSchedule = (course: CourseJsonDataItem) => {
     // Duplicate?
@@ -66,14 +64,6 @@ function App() {
     setAddedClasses(addedClasses.filter(i => i.code !== code));
   }
 
-  timetableToImage(addedClasses.map(i => ({
-    name: i.course.subject.name,
-    professor: i.course.subject.professor || '',
-    schedules: i.schedules
-  })), (result) => {
-    setTimetableImage(result);
-  });
-
   return (
     <div className="app">
       <header>
@@ -82,9 +72,16 @@ function App() {
       <article>
         <WarningSection></WarningSection>
         <section>
-        </section>
-        <section className="has-timetable">
-          <img className="timetable" src={timetableImage} alt="시간표"></img>
+          <div className="timetable">
+            <Timetable
+              classes={
+                addedClasses.map(i => ({
+                  name: i.course.subject.name,
+                  professor: i.course.subject.professor || '',
+                  schedules: i.schedules
+                }))}
+            ></Timetable>
+          </div>
           <div className="actionButtons">
             <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setSearchCoursePopupActive(true); }}>강의 검색</button>&nbsp;
             <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setCurrentAddedCoursesPopupActive(true); }}>현재 추가된 강의 목록</button>&nbsp;
