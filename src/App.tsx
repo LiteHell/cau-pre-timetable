@@ -62,11 +62,8 @@ function App() {
     }
   }, 0);
 
-  const deleteSchedule = (cls: timetableCourse) => {
-     deleteScheduleByCodeAndClass( cls.code , cls.class);
-  }
-  const deleteScheduleByCodeAndClass = (code: number, classNo: number) => {
-    setAddedClasses(addedClasses.filter(i => i.code !== code || i.class !== classNo));
+  const deleteScheduleByCode = (code: number) => {
+    setAddedClasses(addedClasses.filter(i => i.code !== code));
   }
 
   timetableToImage(addedClasses.map(i => ({
@@ -103,7 +100,7 @@ function App() {
             <FilterableSubjectTable
               courses={(courses as any[]).filter(i => i.subject.courseName === '학사')}
               onAddButtonClick={(i) => { addSchedule(i); }}
-              onDeleteButtonClick={(i) => {deleteScheduleByCodeAndClass(i.subject.code, i.subject.class);}}
+              onDeleteButtonClick={(i) => {deleteScheduleByCode(i.subject.code);}}
               courseCodesToHideAddBtn={addedClasses.map(i => i.code)}
             ></FilterableSubjectTable>
           </div>
@@ -126,7 +123,7 @@ function App() {
                 </thead>
                 <tbody>
                   {addedClasses.map(i => <tr>
-                    <td><button type="button" onClick={() => deleteSchedule(i)}>삭제</button></td>
+                    <td><button type="button" onClick={() => deleteScheduleByCode(i.code)}>삭제</button></td>
                     <td>{i.course.subject.classification}</td>
                     <td>{i.course.subject.schoolYear}</td>
                     <td>{i.course.subject.points}</td>
