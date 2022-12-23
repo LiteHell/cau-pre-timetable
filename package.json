@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.0",
     "cau.ac.kr": "^1.2.5",
     "classnames": "^2.3.2",
+    "dom-to-image": "^2.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
@@ -19,6 +20,7 @@
     "react-scripts": "5.0.1",
     "serve": "^14.1.2",
     "styled-components": "^5.3.6",
+    "trim-canvas": "^0.1.2",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
@@ -46,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/dom-to-image": "^2.6.4"
   }
 }

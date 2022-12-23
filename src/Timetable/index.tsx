@@ -14,7 +14,7 @@ function range(start: number, end: number): number[] {
     return result;
 }
 
-type Class = {
+export type Class = {
     name: string;
     professor: String;
     schedules: {
