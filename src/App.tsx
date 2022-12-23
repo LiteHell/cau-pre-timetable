@@ -6,6 +6,7 @@ import { parseSubjectSchedule, CauSubjectSchedule } from "cau.ac.kr";
 import { CourseJsonDataItem, CrawlInfo } from './courseTyping';
 import Qna from './qna';
 import Popup from './Popup';
+import WarningSection from './warningSection';
 
 type timetableCourse = { course: CourseJsonDataItem, code: number, class: number, schedules: CauSubjectSchedule[] };
 
@@ -72,6 +73,7 @@ function App() {
         <h1>강의시간표 미리보기 ({crawlInfo?.year}년 {crawlInfo?.semester}학기)</h1>
       </header>
       <article>
+        <WarningSection></WarningSection>
         <section>
           <div className="timetable">
             <Timetable
