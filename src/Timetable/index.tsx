@@ -27,65 +27,124 @@ type Class = {
     }[]
 }
 
-function getMatchedCol(classes: Class[], day: number, classPeriod: number) {
-    const startsAt = classPeriod * 60 + 8 * 60;
-    const endsAt = startsAt + 60;
-    const colHeight = 5; // em
+function getTextWidth(text: string, fontSize: number) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (context == null) {
+        return text.length * 7; // guess
+    }
+    context.font = `normal ${fontSize}px sans-serif`;
+    const metrics = context.measureText(text);
+    return metrics.width;
+}
+
+function svgTextWithLineBreak(text: string, x: number, fontSize: number, width: number, height: number): JSX.Element[] {
+    const texts = ['']
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] == '\n') {
+            texts.push('')
+            continue
+        }
+
+        if (getTextWidth(texts[texts.length - 1] + text[i], fontSize) < width) {
+            texts[texts.length - 1] += text[i]
+        } else {
+            texts.push(text[i])
+        }
+    }
+
+    const maxTspanLen = height / (fontSize * 1.2);
+    if (texts.length > maxTspanLen) {
+        texts.splice(maxTspanLen, texts.length - maxTspanLen);
+    }
+
+    return texts.map((i) => <tspan fontSize={`${fontSize}px`} x={x} dy="1.2em">{i}</tspan>)
+}
+
+function fitTspansIntoHeight(tspans: JSX.Element[], height: number) {
+    let tmp = 0;
+    const fitted = []
+    for(let i = 0; i < tspans.length; i++) {
+        const tspan = tspans[i];
+        tmp += parseInt(/([0-9]+)/.exec(tspan.props["fontSize"])![0]) * 1.3;
+        if (tmp > height) {
+            return fitted
+        } else {
+            fitted.push(tspan)
+        }
+    }
+
+    return fitted
+}
+
+function* getClassTimeslots(classes: Class[]) {
+    const colHeight = 70; //px
 
     for (let i = 0; i < classes.length; i++) {
         const cls = classes[i];
         for (const schedule of cls.schedules) {
             for (const time of schedule.times) {
-                if (time.timeStartsAt > endsAt || time.timeEndsAt < startsAt || time.day !== day)
-                    continue;
+                const startingPeroid = (time.timeStartsAt - 8 * 60) / 60;
+                const endingPeroid = (time.timeEndsAt - 8 * 60) / 60;
+                const periodLength = endingPeroid - startingPeroid;
 
-                const firstPart = time.timeStartsAt >= startsAt;
-                const beforeStart = time.timeStartsAt <= startsAt ? 0 : time.timeStartsAt - startsAt;
-                const classLen = (time.timeEndsAt <= endsAt ? time.timeEndsAt : endsAt) - (time.timeStartsAt >= startsAt ? time.timeStartsAt : startsAt);
-                const afterEnd = time.timeEndsAt >= endsAt ? 0 : endsAt - time.timeEndsAt;
-                console.log(beforeStart, classLen, afterEnd);
+                const x = time.day * 70 + 70;
+                const y = 40 + colHeight * startingPeroid;
+                const height = colHeight * periodLength;
 
-                if (classLen === 0)
-                    continue;
+                const tspan = fitTspansIntoHeight(svgTextWithLineBreak(`${cls.name}\n${cls.professor}`, x + 65, 12, 63, height).concat(
+                    svgTextWithLineBreak(schedule.location ?? '', x + 65, 10, 63, height)
+                ), height)
 
-                return <div className={styles.timeslot}>
-                    {beforeStart > 0 && <div className={styles.placeholder} style={{height: (colHeight * (beforeStart / 60)) + 'em'}}></div>}
-                    {
-                    <div className={styles.timeslotItem} style={{height: 
-                        (beforeStart === 0 && afterEnd === 0 ? colHeight : colHeight * (classLen / 60)) + 'em',
-                    background: backColors[i],
-                    border: '1px solid ' + backColors[i],
-                    color: blackForeColors[i] ? 'black': ' white'
-                }}
-                        >{firstPart && <div className={styles.classDescription}>
-                            {cls.name}
-                            <div className={styles.smaller}>{cls.professor}
-                            <br></br>
-                            {schedule.location}</div></div>}</div>
-                    } 
-                    {afterEnd > 0 && <div className={styles.placeholder} style={{height: (colHeight * (afterEnd / 60)) + 'em'}}></div>} 
-                </div>
+                yield <g x={x} y={y}>
+                    <rect x={x} y={y} height={height} width="70px" fill={backColors[i]} strokeWidth="0.5px"></rect>
+                    <text fill={blackForeColors[i] ? 'black' : 'white'} textAnchor='end' x={x + 60} y={y + 5} fontSize="14px" dominantBaseline='hagging'>
+                        {tspan}
+                    </text>
+                </g>
             }
         }
     }
-
-    return <div className={classnames(styles.timeslot, styles.empty)}></div>
 }
 
 function timetable(opts: {classes: Class[]}) {
     const days = ['월','화','수','목','금','토','일'];
-    return <div className={styles.timetable}>
-        <div className={styles.days}>
-            <div className={styles.placeholder}></div>
-            {days.map(i => <div className={styles.day}>{i}</div>)}
-        </div>
-        {range(0, 12).map(time => 
-            <div className={styles.timeslotRow}>
-                <div className={styles.timeslotRowDescription}>{time + 8}:00<br></br>({time}교시)</div>
-                {range(0, 6).map(day => getMatchedCol(opts.classes, day, time))}
-            </div>
-        )}
-    </div>
+
+    const slots = []
+    const timeslotIt = getClassTimeslots(opts.classes)
+    while (true) {
+        const itResult = timeslotIt.next()
+        if (itResult.done) {
+            break
+        } else {
+            slots.push(itResult.value)
+        }
+    }
+
+    return <svg className={styles.timetable} height="auto" width={(days.length + 1) * 70} viewBox={`0 0 ${(days.length + 1) * 70} 950`}>
+            <g id="days">
+                <rect fill='transparent' x={0} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'>
+                </rect>
+                {days.map((i, idx) => <g key={idx}>
+                        <rect fill='transparent' x={(idx + 1) * 70} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'></rect>
+                        <text fontSize='14px' fill='black' dominantBaseline="hagging" x={(idx + 1) * 70 + 28} y={25}>
+                            {i} 
+                        </text>
+                    </g>)}
+            </g>
+            <g id="times">
+                {range(0, 12).map((time, idx) => 
+                    <g key={idx}>
+                        <rect y={40 + 70 * (idx)} x={0} width="70px" height="70px" fill="transparent" strokeWidth="0.5px" stroke='#404040'></rect>
+                        <text y={40 + 70 * (idx) + 15} textAnchor='end'>
+                            <tspan x={65}>{time + 8}:00</tspan>
+                            <tspan x={65} dy={14}>({time}교시)</tspan>
+                        </text>
+                </g>)}
+            </g>
+            <rect fill='#e4e4e4' x={70} y={40} width={days.length * 70} height="910px"></rect>
+            {slots}
+    </svg>
 }
 
 export default timetable;

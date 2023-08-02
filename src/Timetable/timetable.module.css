@@ -1,44 +1,5 @@
 .timetable {
     font-size: 14px;
-    display: table;
     background: whitesmoke;
     color: black;
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-.days, .timeslotRow {
-    display: table-row;
-}
-.day {
-    padding: 0.5em 2em;
-    display: table-cell;
-    border: 1px solid black;
-}
-
-.timeslotRowDescription, .timeslot {
-    display: table-cell;
-    vertical-align: top;
-    text-align: right;
-    height: 5em;
-    width: 5em;
-    max-width: 5em;
-}
-
-.timeslot {
-    background: #e4e4e4;
-}
-
-.timeslotRowDescription {
-    border: 1px solid black;
-    text-overflow: ellipsis;
-}
-
-.classDescription {
-    font-size: 0.9em;
-    word-break: break-all;
-    text-overflow: ellipsis;
-}
-
-.smaller {
-    font-size: 0.75em;
 }
