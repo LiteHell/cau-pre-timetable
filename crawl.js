@@ -3,8 +3,31 @@ const fs = require('fs/promises');
 const { existsSync } = require('fs');
 const path = require('node:path');
 
-const semester = process.env.CAU_SEMESTER;
-const year = process.env.CAU_YEAR;
+async function getCurrentSemester() {
+    const res = await fetch('https://mportal.cau.ac.kr/std/usk/sUskSif001/selectCurYear.ajax', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: "{}"
+    });
+
+    const data = await res.json()
+    return [parseInt(data.year[0].year), data.year[0].shtm];
+}
+
+function getNextSemesterOf(year, semester) {
+    switch(semester) {
+        case '1':
+            return [year, 'S'];
+        case 'S':
+            return [year, '2'];
+        case '2':
+            return [year, 'W'];
+        case 'W':
+            return [year + 1, '1'];
+    }
+}
 
 function spawnCommand(command, argvs) {
     return new Promise((resolve, reject) => {
@@ -21,6 +44,9 @@ function spawnCommand(command, argvs) {
 }
 
 (async () => {
+    const [curYear, curSemester] = await getCurrentSemester()
+    console.log(`Current Year-Semester: ${curYear}-${curSemester}`)
+    const [year, semester] = getNextSemesterOf(curYear, curSemester)
     console.log(`Year-Semester: ${year}-${semester}`);
     for (const ext of ['json', 'csv']) {
         console.log(`Crawlling in ${ext} format`)
