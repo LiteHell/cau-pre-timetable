@@ -82,12 +82,12 @@ function App() {
                 }))}
             ></Timetable>
           </div>
-          <div className="actionButtons">
-            <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setSearchCoursePopupActive(true); }}>강의 검색</button>&nbsp;
-            <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setCurrentAddedCoursesPopupActive(true); }}>현재 추가된 강의 목록</button>&nbsp;
-            <button type="button" onClick={() => { setAddedClasses([]); }}>시간표 비우기</button>&nbsp;
-          </div>
         </section>
+        <div className="actionButtons">
+          <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setSearchCoursePopupActive(true); }}>강의 검색</button>&nbsp;
+          <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setCurrentAddedCoursesPopupActive(true); }}>현재 추가된 강의 목록</button>&nbsp;
+          <button type="button" onClick={() => { setAddedClasses([]); }}>시간표 비우기</button>&nbsp;
+        </div>
         <section className="qnaContainer">
           <h1>Q&A</h1>
           <Qna crawlInfo={crawlInfo}></Qna>
