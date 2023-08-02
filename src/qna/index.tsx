@@ -6,7 +6,7 @@ export default function qna({ crawlInfo }: { crawlInfo: CrawlInfo | null }) {
     <div className={styles.qnaItem}>
       <div className={styles.question}>이게 뭡니까?</div>
       <div className={styles.answer}>강의시간표 정식공개 전에 부정확하게나마 확인할 수 있게 하는 웹사이트입니다.<br></br>
-        시간표도 나름 만들어볼 수 있게 밑에 시간표 만드는 기능도 넣어놨습니다. (버그 있을 수 있음)</div>
+        시간표도 나름 만들어볼 수 있게 위에 시간표 만드는 기능도 넣어놨습니다. (버그 있을 수 있음)</div>
     </div>
     <div className={styles.qnaItem}>
       <div className={styles.question}>정확합니까?</div>
