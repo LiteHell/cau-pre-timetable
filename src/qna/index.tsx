@@ -20,10 +20,6 @@ export default function qna({ crawlInfo }: { crawlInfo: CrawlInfo | null }) {
       </div>
     </div>
     <div className={styles.qnaItem}>
-      <div className={styles.question}>홈페이지 UI가 성의없습니다.</div>
-      <div className={styles.answer}>대충 만들어서 그렇습니다. 그냥 쓰세요.</div>
-    </div>
-    <div className={styles.qnaItem}>
       <div className={styles.question}>언제 크롤링된 데이터입니까?</div>
       <div className={styles.answer}>{crawlInfo === null ? '지금 불러오는 중이니 잠시만 기다려주세요.' : `${new Date(crawlInfo.crawlledAt).toLocaleString()}에 크롤링된 ${crawlInfo.year}년도 ${crawlInfo.semester}학기 데이터입니다.`}</div>
     </div>
