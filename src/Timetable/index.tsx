@@ -119,7 +119,7 @@ const timetable = forwardRef(function (opts: {classes: Class[]}, ref: ForwardedR
         }
     }
 
-    return <svg ref={ref} height="auto" width={(days.length + 1) * 70} viewBox={`0 0 ${(days.length + 1) * 70} 950`}>
+    return <svg ref={ref} width={(days.length + 1) * 70} viewBox={`0 0 ${(days.length + 1) * 70} 950`}>
             <g id="days">
                 <rect fill='whitesmoke' x={0} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'>
                 </rect>

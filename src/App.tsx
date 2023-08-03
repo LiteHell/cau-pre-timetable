@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Timetable from './Timetable';
 import './App.css';
 import FilterableSubjectTable from './filterableSubjectTable';
@@ -7,6 +7,7 @@ import { CourseJsonDataItem, CrawlInfo } from './courseTyping';
 import Qna from './qna';
 import Popup from './Popup';
 import WarningSection from './warningSection';
+import { Canvg, presets } from 'canvg';
 
 type timetableCourse = { course: CourseJsonDataItem, code: number, class: number, schedules: CauSubjectSchedule[] };
 
@@ -16,6 +17,7 @@ function App() {
   const [courses, setCourses] = useState<(CourseJsonDataItem[])>([]);
   const [crawlInfo, setCrawlInfo] = useState<CrawlInfo | null>(null);
   const [addedClasses, setAddedClasses] = useState<(timetableCourse)[]>([]);
+  const timetableSVGRef = useRef<SVGSVGElement>(null);
 
   const addSchedule = (course: CourseJsonDataItem) => {
     // Duplicate?
@@ -63,6 +65,28 @@ function App() {
   const deleteScheduleByCode = (code: number) => {
     setAddedClasses(addedClasses.filter(i => i.code !== code));
   }
+  const exportAsImage = async () => {
+    const svg = timetableSVGRef.current?.outerHTML
+    if (svg === null || typeof svg === 'undefined')
+      return alert('오류! null/undefined svg');
+    
+    const canvas = new OffscreenCanvas(560, 950);
+    const ctx = canvas.getContext('2d')
+
+    if (ctx == null)
+      return alert('오류! null canvas context');
+
+    const v = await Canvg.from(ctx, svg, presets.offscreen());
+    await v.render();
+
+    const pngBlob = await canvas.convertToBlob({type: 'image/png'})
+    const pngBlobUrl = window.URL.createObjectURL(pngBlob)
+    
+    const anchor = document.createElement('a');
+    anchor.download = 'timetable.png';
+    anchor.href = pngBlobUrl
+    anchor.click()
+  }
 
   return (
     <div className="app">
@@ -74,6 +98,7 @@ function App() {
         <section>
           <div className="timetable">
             <Timetable
+              ref={timetableSVGRef}
               classes={
                 addedClasses.map(i => ({
                   name: i.course.subject.name,
@@ -87,6 +112,7 @@ function App() {
           <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setSearchCoursePopupActive(true); }}>강의 검색</button>&nbsp;
           <button type="button" disabled={isCurrentAddedCoursesPopupActive || isSearchCoursePopupActive} onClick={() => { setCurrentAddedCoursesPopupActive(true); }}>현재 추가된 강의 목록</button>&nbsp;
           <button type="button" onClick={() => { setAddedClasses([]); }}>시간표 비우기</button>&nbsp;
+          <button type="button" onClick={() => { exportAsImage() }}>이미지로 저장</button>
         </div>
         <section className="qnaContainer">
           <h1>Q&A</h1>
