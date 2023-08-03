@@ -1,6 +1,4 @@
-import classnames from 'classnames';
-import React from 'react';
-import styles from './timetable.module.css';
+import React, { ForwardedRef, MutableRefObject, Ref, forwardRef } from 'react';
 
 const backColors = ['#a0522d', '#006400', '#708090', '#000080', '#ff0000', '#ffa500', '#ffff00', '#c71585', '#00ff00', '#00ffff',
 '#0000ff', '#ff00ff', '#1e90ff', '#98fb98', '#ffdead'];
@@ -107,7 +105,7 @@ function* getClassTimeslots(classes: Class[]) {
     }
 }
 
-function timetable(opts: {classes: Class[]}) {
+const timetable = forwardRef(function (opts: {classes: Class[]}, ref: ForwardedRef<SVGSVGElement>)  {
     const days = ['월','화','수','목','금','토','일'];
 
     const slots = []
@@ -121,12 +119,12 @@ function timetable(opts: {classes: Class[]}) {
         }
     }
 
-    return <svg className={styles.timetable} height="auto" width={(days.length + 1) * 70} viewBox={`0 0 ${(days.length + 1) * 70} 950`}>
+    return <svg ref={ref} height="auto" width={(days.length + 1) * 70} viewBox={`0 0 ${(days.length + 1) * 70} 950`}>
             <g id="days">
-                <rect fill='transparent' x={0} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'>
+                <rect fill='whitesmoke' x={0} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'>
                 </rect>
                 {days.map((i, idx) => <g key={idx}>
-                        <rect fill='transparent' x={(idx + 1) * 70} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'></rect>
+                        <rect fill='whitesmoke' x={(idx + 1) * 70} y={0} width={70} height={40} strokeWidth="0.5px" stroke='#404040'></rect>
                         <text fontSize='14px' fill='black' dominantBaseline="hagging" x={(idx + 1) * 70 + 28} y={25}>
                             {i} 
                         </text>
@@ -135,7 +133,7 @@ function timetable(opts: {classes: Class[]}) {
             <g id="times">
                 {range(0, 12).map((time, idx) => 
                     <g key={idx}>
-                        <rect y={40 + 70 * (idx)} x={0} width="70px" height="70px" fill="transparent" strokeWidth="0.5px" stroke='#404040'></rect>
+                        <rect y={40 + 70 * (idx)} x={0} width="70px" height="70px" fill="whitesmoke" strokeWidth="0.5px" stroke='#404040'></rect>
                         <text y={40 + 70 * (idx) + 15} textAnchor='end'>
                             <tspan x={65}>{time + 8}:00</tspan>
                             <tspan x={65} dy={14}>({time}교시)</tspan>
@@ -145,6 +143,6 @@ function timetable(opts: {classes: Class[]}) {
             <rect fill='#e4e4e4' x={70} y={40} width={days.length * 70} height="910px"></rect>
             {slots}
     </svg>
-}
+});
 
 export default timetable;
