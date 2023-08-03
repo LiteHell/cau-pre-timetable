@@ -16,8 +16,13 @@ function App() {
   const [isCurrentAddedCoursesPopupActive, setCurrentAddedCoursesPopupActive] = useState<boolean>(false);
   const [courses, setCourses] = useState<(CourseJsonDataItem[])>([]);
   const [crawlInfo, setCrawlInfo] = useState<CrawlInfo | null>(null);
-  const [addedClasses, setAddedClasses] = useState<(timetableCourse)[]>([]);
+  const [addedClasses, _setAddedClasses] = useState<(timetableCourse)[]>(JSON.parse(localStorage.getItem('cau-pre-timetable-added-classes') ?? '[]'));
   const timetableSVGRef = useRef<SVGSVGElement>(null);
+
+  const setAddedClasses = (v: timetableCourse[]) => {
+    localStorage.setItem('cau-pre-timetable-added-classes', JSON.stringify(v));
+    _setAddedClasses(v);
+  }
 
   const addSchedule = (course: CourseJsonDataItem) => {
     // Duplicate?
