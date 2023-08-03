@@ -26,9 +26,6 @@ export default function qna({ crawlInfo }: { crawlInfo: CrawlInfo | null }) {
     <div className={styles.qnaItem}>
       <div className={styles.question}>언제 크롤링된 데이터입니까?</div>
       <div className={styles.answer}>{crawlInfo === null ? '지금 불러오는 중이니 잠시만 기다려주세요.' : `${new Date(crawlInfo.crawlledAt).toLocaleString()}에 크롤링된 ${crawlInfo.year}년도 ${crawlInfo.semester}학기 데이터입니다.`}</div>
-      <ul className={styles.remarks}>
-        <li>학사과정 과목들만 표시됩니다. 대학원 과목들도 표시할 수 있긴 한데 귀찮아서 안했습니다.</li>
-      </ul>
     </div>
   </p>;
 }
