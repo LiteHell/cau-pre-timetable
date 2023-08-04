@@ -1,8 +1,7 @@
 FROM node:18-alpine
 
-# Set workdir and volumes
+# Set workdir
 WORKDIR /app
-VOLUME [ "/app/build/courses" ]
 
 # Install cron
 RUN apk add --no-cache dcron
@@ -21,6 +20,9 @@ COPY tsconfig.json /app
 
 # Build web app
 RUN yarn build
+
+# Set volume
+VOLUME [ "/app/build/courses" ]
 
 # Copy start script and crawl script
 COPY start.sh /app/start.sh
