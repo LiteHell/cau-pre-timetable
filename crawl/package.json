@@ -1,0 +1,10 @@
+{
+  "name": "cau-pre-timetable-crawl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "LiteHell",
+  "license": "MIT",
+  "dependencies": {
+    "cau.ac.kr": "^1.2.5"
+  }
+}
