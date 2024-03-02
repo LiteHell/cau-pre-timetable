@@ -10,6 +10,7 @@ coverage
 
 # production
 frontend/build
+crawl/*.zip
 
 # misc
 .DS_Store

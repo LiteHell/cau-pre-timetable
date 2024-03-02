@@ -2,6 +2,8 @@ const { spawn } = require('node:child_process');
 const fs = require('fs/promises');
 const { existsSync } = require('fs');
 const path = require('node:path');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { createReadStream } = require('node:fs');
 
 async function getCurrentSemester() {
     const res = await fetch('https://mportal.cau.ac.kr/std/usk/sUskSif001/selectCurYear.ajax', {
@@ -43,39 +45,55 @@ function spawnCommand(command, argvs) {
     });
 }
 
-(async () => {
+exports.handler = async () => {
     const [curYear, curSemester] = await getCurrentSemester()
     console.log(`Current Year-Semester: ${curYear}-${curSemester}`)
     const [year, semester] = getNextSemesterOf(curYear, curSemester)
     console.log(`Year-Semester: ${year}-${semester}`);
     for (const ext of ['json', 'csv']) {
         console.log(`Crawlling in ${ext} format`)
-        await spawnCommand('node', ['/app/node_modules/cau.ac.kr/dist/crawller',
-            '--outFile', 'courses.tmp.' + ext,
+        await spawnCommand('node', ['node_modules/cau.ac.kr/dist/crawller',
+            '--outFile', '/tmp/courses.tmp.' + ext,
             '--type', ext,
             '--semester', semester,
             '--year', year]);
         console.log('');
     }
 
-    console.log('Copying files')
-    for (const ext of ['csv', 'json']) {
-        const source = 'courses.tmp.' + ext
-        const debugTargetName = path.join(__dirname, 'public/courses/courses.' + ext);
-        const prodTargetName = path.join(__dirname, 'build/courses/courses.' + ext);
-        if (existsSync(debugTargetName))
-            await fs.rm(debugTargetName);
-        await fs.copyFile(source, debugTargetName)
-        await fs.copyFile(source, prodTargetName)
-        await fs.rm(source);
-    }
-    console.log('Writing timestamp');
+    console.log('Getting timestamp');
     const crawlInfo = JSON.stringify({
         crawlledAt: Date.now(),
         year,
         semester
     });
-    await fs.writeFile(path.join(__dirname, 'public/courses/crawlInfo.json'), crawlInfo, { encoding: 'utf8' });
-    await fs.writeFile(path.join(__dirname, 'build/courses/crawlInfo.json'), crawlInfo, { encoding: 'utf8' });
+
+    const s3 = new S3Client();
+    console.log('Uploading files')
+    for (const ext of ['csv', 'json']) {
+        const source = '/tmp/courses.tmp.' + ext
+        const stream = createReadStream(source);
+        const contentType = ext === 'json' ? 'application/json' : 'text/csv'
+        await s3.send(new PutObjectCommand({
+            Bucket: 'pre-timetable.puang.network',
+            Key: 'courses/courses.' + ext,
+            Body: stream,
+            ContentType: contentType,
+            Metadata: {
+                'Content-Type': contentType
+            }
+        }));
+    }
+
+    console.log('Uploading timestamp');
+    await s3.send(new PutObjectCommand({
+        Bucket: 'pre-timetable.puang.network',
+        Key: 'courses/crawlInfo.json',
+        Body: crawlInfo,
+        ContentType: 'application/json',
+        Metadata: {
+            'Content-Type': 'application/json'
+        }
+    }));
+
     console.log('Done');
-})();
+};
